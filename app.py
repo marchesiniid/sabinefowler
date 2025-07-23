@@ -41,11 +41,11 @@ with st.form("form"):
         suma_oi = sum(oi.values()); pm_oi = porc_mono(oi); to_oi = pm_oi * 0.42
 
         st.markdown("### <span style='color:red'>Oído Derecho</span>", unsafe_allow_html=True)
-        st.markdown(f"<span style='color:red'>• Suma de Umbrales: {suma_od}</span>", unsafe_allow_html=True)
-        st.markdown(f"<span style='color:red'>• % PAB: {pm_od:.1f}%</span>", unsafe_allow_html=True)
-        st.markdown(f"<span style='color:red'>• T.O.: {to_od:.1f}</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:black'>• Suma de Umbrales: {suma_od}</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:black'>• % PAB: {pm_od:.1f}%</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:black'>• T.O.: {to_od:.1f}</span>", unsafe_allow_html=True)
 
         st.markdown("### <span style='color:blue'>Oído Izquierdo</span>", unsafe_allow_html=True)
-        st.markdown(f"<span style='color:blue'>• Suma de Umbrales: {suma_oi}</span>", unsafe_allow_html=True)
-        st.markdown(f"<span style='color:blue'>• % PAB: {pm_oi:.1f}%</span>", unsafe_allow_html=True)
-        st.markdown(f"<span style='color:blue'>• T.O.: {to_oi:.1f}</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:black'>• Suma de Umbrales: {suma_oi}</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:black'>• % PAB: {pm_oi:.1f}%</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:black'>• T.O.: {to_oi:.1f}</span>", unsafe_allow_html=True)
