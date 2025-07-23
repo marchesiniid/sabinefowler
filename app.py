@@ -31,9 +31,10 @@ def porc_mono(umbral_dict):
 
 st.title("Calculadora % PAB, T.O. y Suma de Umbrales")
 with st.form("form"):
-    st.subheader("Entrada de Umbrales")
     st.write("Ingresa los umbrales en dB para cada frecuencia de ambos oídos.")
+    st.subheader("Oído Derecho")
     od = {f: st.number_input(f"{f} Hz (dB)", 0, 120, key=f"od{f}") for f in (500, 1000, 2000, 4000)}
+    st.subheader("Oído Izquierdo")
     oi = {f: st.number_input(f"{f} Hz (dB)", 0, 120, key=f"oi{f}") for f in (500, 1000, 2000, 4000)}
     if st.form_submit_button("Calcular"):
         suma_od = sum(od.values()); pm_od = porc_mono(od); to_od = pm_od * 0.42
