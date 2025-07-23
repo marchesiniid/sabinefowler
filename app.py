@@ -34,4 +34,17 @@ with st.form("form"):
     st.subheader("Entrada de Umbrales")
     st.write("Ingresa los umbrales en dB para cada frecuencia de ambos oídos.")
     od = {f: st.number_input(f"{f} Hz (dB)", 0, 120, key=f"od{f}") for f in (500, 1000, 2000, 4000)}
-    oi = {f: st.number_input(f"{f} Hz (dB)", 0, 120, key=f"oi{f}") for f in (500, 1000, 200_
+    oi = {f: st.number_input(f"{f} Hz (dB)", 0, 120, key=f"oi{f}") for f in (500, 1000, 2000, 4000)}
+    if st.form_submit_button("Calcular"):
+        suma_od = sum(od.values()); pm_od = porc_mono(od); to_od = pm_od * 0.42
+        suma_oi = sum(oi.values()); pm_oi = porc_mono(oi); to_oi = pm_oi * 0.42
+
+        st.markdown("### <span style='color:red'>Oído Derecho</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:red'>• Suma de Umbrales: {suma_od}</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:red'>• % PAB: {pm_od:.1f}%</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:red'>• T.O.: {to_od:.1f}</span>", unsafe_allow_html=True)
+
+        st.markdown("### <span style='color:blue'>Oído Izquierdo</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:blue'>• Suma de Umbrales: {suma_oi}</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:blue'>• % PAB: {pm_oi:.1f}%</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:blue'>• T.O.: {to_oi:.1f}</span>", unsafe_allow_html=True)
