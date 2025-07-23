@@ -1,4 +1,3 @@
-# app.py
 import streamlit as st
 
 # Tabla Fowler‑Sabine (ANSI 1971): umbral dB → % pérdida por freq
@@ -32,26 +31,7 @@ def porc_mono(umbral_dict):
 
 st.title("Calculadora % PAB, T.O. y Suma de Umbrales")
 with st.form("form"):
-    st.subheader("Oído Derecho")
+    st.subheader("Entrada de Umbrales")
+    st.write("Ingresa los umbrales en dB para cada frecuencia de ambos oídos.")
     od = {f: st.number_input(f"{f} Hz (dB)", 0, 120, key=f"od{f}") for f in (500, 1000, 2000, 4000)}
-    st.subheader("Oído Izquierdo")
-    oi = {f: st.number_input(f"{f} Hz (dB)", 0, 120, key=f"oi{f}") for f in (500, 1000, 2000, 4000)}
-    if st.form_submit_button("Calcular"):
-        # Cálculos oído derecho
-        suma_od = sum(od.values())
-        pm_od = porc_mono(od)
-        to_od = pm_od * 0.42
-        # Cálculos oído izquierdo
-        suma_oi = sum(oi.values())
-        pm_oi = porc_mono(oi)
-        to_oi = pm_oi * 0.42
-
-        st.write(f"**Oído Derecho**")
-        st.write(f"- Suma de Umbrales: {suma_od}")
-        st.write(f"- % PAB: {pm_od:.1f}%")
-        st.write(f"- T.O.: {to_od:.1f}")
-
-        st.write(f"**Oído Izquierdo**")
-        st.write(f"- Suma de Umbrales: {suma_oi}")
-        st.write(f"- % PAB: {pm_oi:.1f}%")
-        st.write(f"- T.O.: {to_oi:.1f}")
+    oi = {f: st.number_input(f"{f} Hz (dB)", 0, 120, key=f"oi{f}") for f in (500, 1000, 200_
