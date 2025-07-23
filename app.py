@@ -30,18 +30,28 @@ def lookup(umbral, freq):
 def porc_mono(umbral_dict):
     return sum(lookup(umbral_dict[f], f) for f in (500, 1000, 2000, 4000))
 
-st.title("Calculadora % PAB y T.O. (Fowler‑Sabine)")
+st.title("Calculadora % PAB, T.O. y Suma de Umbrales")
 with st.form("form"):
     st.subheader("Oído Derecho")
     od = {f: st.number_input(f"{f} Hz (dB)", 0, 120, key=f"od{f}") for f in (500, 1000, 2000, 4000)}
     st.subheader("Oído Izquierdo")
     oi = {f: st.number_input(f"{f} Hz (dB)", 0, 120, key=f"oi{f}") for f in (500, 1000, 2000, 4000)}
     if st.form_submit_button("Calcular"):
+        # Cálculos oído derecho
+        suma_od = sum(od.values())
         pm_od = porc_mono(od)
-        pm_oi = porc_mono(oi)
         to_od = pm_od * 0.42
+        # Cálculos oído izquierdo
+        suma_oi = sum(oi.values())
+        pm_oi = porc_mono(oi)
         to_oi = pm_oi * 0.42
-        st.write(f"**% PAB Oído Derecho:** {pm_od:.1f}%")
-        st.write(f"**T.O. Oído Derecho:** {to_od:.1f}")
-        st.write(f"**% PAB Oído Izquierdo:** {pm_oi:.1f}%")
-        st.write(f"**T.O. Oído Izquierdo:** {to_oi:.1f}")
+
+        st.write(f"**Oído Derecho**")
+        st.write(f"- Suma de Umbrales: {suma_od}")
+        st.write(f"- % PAB: {pm_od:.1f}%")
+        st.write(f"- T.O.: {to_od:.1f}")
+
+        st.write(f"**Oído Izquierdo**")
+        st.write(f"- Suma de Umbrales: {suma_oi}")
+        st.write(f"- % PAB: {pm_oi:.1f}%")
+        st.write(f"- T.O.: {to_oi:.1f}")
