@@ -38,14 +38,18 @@ with st.form("form"):
     oi = {f: st.number_input(f"{f} Hz (dB)", 0, 120, key=f"oi{f}") for f in (500, 1000, 2000, 4000)}
     if st.form_submit_button("Calcular"):
         suma_od = sum(od.values()); pm_od = porc_mono(od); to_od = pm_od * 0.42
+        perdida_od = suma_od / 4
         suma_oi = sum(oi.values()); pm_oi = porc_mono(oi); to_oi = pm_oi * 0.42
+        perdida_oi = suma_oi / 4
 
         st.markdown("### <span style='color:red'>Oído Derecho</span>", unsafe_allow_html=True)
         st.write(f"- Suma de Umbrales: {suma_od}")
+        st.write(f"- Pérdida en dB: {perdida_od:.1f}")
         st.write(f"- % PAB: {pm_od:.1f}%")
         st.write(f"- T.O.: {to_od:.1f}")
 
         st.markdown("### <span style='color:blue'>Oído Izquierdo</span>", unsafe_allow_html=True)
         st.write(f"- Suma de Umbrales: {suma_oi}")
+        st.write(f"- Pérdida en dB: {perdida_oi:.1f}")
         st.write(f"- % PAB: {pm_oi:.1f}%")
         st.write(f"- T.O.: {to_oi:.1f}")
