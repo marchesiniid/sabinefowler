@@ -40,20 +40,22 @@ def clasificar(pt_prom):
 st.title("Calculadora Audiometría Tonal (Med. Laboral)")
 
 with st.form("form"):
+    incluir6k = st.checkbox("Incluir 6000 Hz para HFA y asimetría", value=False)
     st.write("Ingresá los umbrales en dB:")
     cols = st.columns(2)
     with cols[0]:
         st.subheader("Oído Derecho")
         od = {
-            **{f: st.number_input(f"{f} Hz", 0, 120, key=f"od{f}") for f in (500,1000,2000,4000)},
-            6000: st.number_input("6000 Hz", 0, 120, key="od6000")
-        }
+            f: st.number_input(f"{f} Hz", 0, 120, key=f"od{f}") for f in (500,1000,2000,4000)}
+        if incluir6k:
+            od[6000] = st.number_input("6000 Hz", 0, 120, key="od6000")
+        
     with cols[1]:
         st.subheader("Oído Izquierdo")
         oi = {
-            **{f: st.number_input(f"{f} Hz", 0, 120, key=f"oi{f}") for f in (500,1000,2000,4000)},
-            6000: st.number_input("6000 Hz", 0, 120, key="oi6000")
-        }
+            f: st.number_input(f"{f} Hz", 0, 120, key=f"oi{f}") for f in (500,1000,2000,4000)}
+        if incluir6k:
+            oi[6000] = st.number_input("6000 Hz", 0, 120, key="oi6000")
 
     if st.form_submit_button("Calcular"):
         # cálculos básicos
@@ -62,17 +64,20 @@ with st.form("form"):
         pm_od      = porc_mono(od)
         to_od      = pm_od*0.42
         pt_od      = (od[500]+od[1000]+od[2000])/3
-        hfa_od     = (od[2000]+od[4000]+od[6000])/3
+        if incluir6k:
+            hfa_od = (od[2000]+od[4000]+od[6000])/3
 
         suma_oi    = sum(oi.values())
         perdida_oi = suma_oi/4
         pm_oi      = porc_mono(oi)
         to_oi      = pm_oi*0.42
         pt_oi      = (oi[500]+oi[1000]+oi[2000])/3
-        hfa_oi     = (oi[2000]+oi[4000]+oi[6000])/3
+        if incluir6k:
+            hfa_oi = (oi[2000]+oi[4000]+oi[6000])/3
 
-        # asimetría
-        asim = any(abs(od[f]-oi[f])>15 for f in (500,1000,2000,4000,6000))
+        # asimetría sólo sobre las freq disponibles
+        freqs = (500,1000,2000,4000) + ((6000,) if incluir6k else ())
+        asim = any(abs(od.get(f,0)-oi.get(f,0))>15 for f in freqs)
         obs_asim = "Sí" if asim else "No"
 
         # diagnóstico por oído
@@ -89,8 +94,9 @@ with st.form("form"):
         st.write(f"Pérdida en dB: {perdida_od:.1f}")
         st.write(f"% PAB: {pm_od:.1f}%")
         st.write(f"T.O.: {to_od:.1f}")
-        st.write(f"PTT - Promedio de Tonos Puros  (500‑1k‑2k): {pt_od:.1f} dB")
-        st.write(f"HFA - Promedio de Altas frecuencias (2k‑4k‑6k): {hfa_od:.1f} dB")
+        st.write(f"PTT - Promedio Tonos Puros  (500‑1k‑2k): {pt_od:.1f} dB")
+        if incluir6k:
+            st.write(f"HFA - Promedio Altas frecuencias (2k‑4k‑6k): {hfa_od:.1f} dB")
         st.write(f"Asimetría interaural: {obs_asim}")
         st.write(f"Diagnóstico sugerido: {diag_od}")
 
@@ -99,8 +105,9 @@ with st.form("form"):
         st.write(f"Pérdida en dB: {perdida_oi:.1f}")
         st.write(f"% PAB: {pm_oi:.1f}%")
         st.write(f"T.O.: {to_oi:.1f}")
-        st.write(f"PTT (500‑1k‑2k): {pt_oi:.1f} dB")
-        st.write(f"HFA (2k‑4k‑6k): {hfa_oi:.1f} dB")
+        st.write(f"PTT - Promedio Tonos Puros (500‑1k‑2k): {pt_oi:.1f} dB")
+        if incluir6k:
+            st.write(f"HFA - Promedio Altas Frecuencias (2k‑4k‑6k): {hfa_oi:.1f} dB")
         st.write(f"Asimetría interaural: {obs_asim}")
         st.write(f"Diagnóstico sugerido: {diag_oi}")
 
