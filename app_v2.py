@@ -38,22 +38,19 @@ def clasificar(pt_prom):
     return "Profunda"
 
 st.title("Calculadora Audiometría Tonal (Med. Laboral)")
-
+incluir6k = st.checkbox("Incluir 6000 Hz para HFA y asimetría", value=False)
 with st.form("form"):
-    incluir6k = st.checkbox("Incluir 6000 Hz para HFA y asimetría", value=False)
     st.write("Ingresá los umbrales en dB:")
     cols = st.columns(2)
     with cols[0]:
         st.subheader("Oído Derecho")
-        od = {
-            f: st.number_input(f"{f} Hz", 0, 120, key=f"od{f}") for f in (500,1000,2000,4000)}
+        od = {f: st.number_input(f"{f} Hz", 0, 120, key=f"od{f}") for f in (500,1000,2000,4000)}
         if incluir6k:
             od[6000] = st.number_input("6000 Hz", 0, 120, key="od6000")
         
     with cols[1]:
         st.subheader("Oído Izquierdo")
-        oi = {
-            f: st.number_input(f"{f} Hz", 0, 120, key=f"oi{f}") for f in (500,1000,2000,4000)}
+        oi = {f: st.number_input(f"{f} Hz", 0, 120, key=f"oi{f}") for f in (500,1000,2000,4000)}
         if incluir6k:
             oi[6000] = st.number_input("6000 Hz", 0, 120, key="oi6000")
 
